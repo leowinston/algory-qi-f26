@@ -1,2 +1,31 @@
-.venv/
+# Byte-compiled / cache
 __pycache__/
+*.py[cod]
+
+# Virtual Environment
+.venv/
+env/
+venv/
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Output / data caches (if any)
+.cache/
+.ipynb_checkpoints/
+
+# Distribution / packaging / eggs
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# Tool & test caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
