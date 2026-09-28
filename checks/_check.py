@@ -22,10 +22,17 @@ class Checker:
 
     # ---------- loading ----------
     def load(self, caller_file):
-        path = pathlib.Path(caller_file).parent / self.target
+        # No filename passed in --> fall back to the matching file in homework/,
+        # a sibling of the checks/ folder these scripts live in. A filename
+        # passed in (e.g. a renamed submission) is resolved from wherever
+        # you're running the check from, not from homework/.
+        if len(sys.argv) > 1:
+            path = pathlib.Path(self.target)
+        else:
+            path = pathlib.Path(caller_file).parent.parent / "homework" / self.target
         if not path.exists():
             print(f"{R}Cannot find {self.target}{OFF}")
-            print(f"{D}Run this from the folder holding your solution, or pass the "
+            print(f"{D}Run this from the repo root, or pass the "
                   f"filename: python {pathlib.Path(caller_file).name} my_answers.py{OFF}")
             sys.exit(1)
         spec = importlib.util.spec_from_file_location("submission", path)
