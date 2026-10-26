@@ -33,3 +33,16 @@
   - Test C1 on other indices (Nasdaq, international) and other split dates
   - Scale exposure inversely with volatility instead of a binary hold/cash switch
   - Bootstrap the training period to see whether C1's training edge is distinguishable from luck
+
+### [Homework 5: Reading a real option chain](homework/hw05.py)
+- **Objective:** Write the four option payoffs, then read a live `SPY` chain and split call prices into intrinsic and extrinsic value.
+- **What it does:** `payoff` returns profit per share at expiry for long/short calls and puts (long call at spot 80 is −6.00, short call at spot 120 is −14.00), plotted on a 2x2 grid. Pulled the `SPY` chain with `yfinance` for 2026-11-27 (123 calls, 114 puts) and 2027-06-17 (217 calls, 178 puts), priced against the 2026-10-23 close of $759.97. Mid = (bid + ask) / 2, rows with a zero bid dropped, extrinsic = mid − intrinsic.
+- **Result:** Extrinsic value peaks at the $760 strike, right at the money, at $16.08 for the one-month expiry and $51.75 for the longer one. The longer curve is never below the shorter one at the 57 strikes both chains share.
+- **Checks:** `checks/check_hw05.py` passes 14 of 14, and intrinsic + extrinsic = mid on both chains. The longer chain has 15 deep in-the-money calls with negative extrinsic (mid below intrinsic), which I left in and did not investigate.
+- **Not tested:** one ticker, one day of quotes, and two expiries. Mid prices ignore the bid-ask spread, and American early exercise is not modelled. Expiries are hard-coded, so the script needs new ones once they roll off the chain.
+- **Run:** `python homework/hw05.py` (needs network; writes only the three plots in `plots/`) and `python checks/check_hw05.py`.
+- **Next ideas:**
+  - Do the same split for puts and check put-call parity
+  - Convert mids to implied volatility and plot the smile
+  - Combine the payoff outputs into spreads and straddles (HW6)
+  - Repeat on a different day to see how much of the peak moves with spot
